@@ -36,6 +36,9 @@ remote_install 'bash' do
   not_if { installed_at_version?('/usr/local/bin/bash', '4.3.30') }
 end
 
+# ensure we have a bash at /usr/local/bin/bash for when we create the omnibus user
+include_recipe 'omnibus::_bash' if solaris?
+
 #
 # Create an .bashrc.d-style directory for arbitrary loading.
 #

@@ -48,7 +48,7 @@ user node['omnibus']['build_user'] do
   home     build_user_home
   password node['omnibus']['build_user_password']
   unless windows?
-    shell build_user_shell
+    shell '/usr/local/bin/bash'
     gid   node['omnibus']['build_user_group']
   end
   action :create
