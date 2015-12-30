@@ -21,8 +21,9 @@ unless omnibus_toolchain_enabled?
   log 'omnibus_toolchain_not_enabled' do
     message 'Deciding not to install Omnibus Toolchain (package)'
   end
-  return
 end
+
+return unless omnibus_toolchain_enabled?
 
 if solaris_10?
   # create a nocheck file for automated install
@@ -62,5 +63,15 @@ end
 
 user node['omnibus']['build_user'] do
   shell "/opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash"
-  action :modify
+  action :create
+  not_if { solaris? }
+end
+
+execute 'set_shell' do
+  command <<-WAT.gsub(/^\s+/, ' ')
+    passwd -e <<-UGH
+    /opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash
+    UGH
+  WAT
+  only_if { solaris? }
 end

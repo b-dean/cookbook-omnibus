@@ -48,10 +48,18 @@ user node['omnibus']['build_user'] do
   home     build_user_home
   password node['omnibus']['build_user_password']
   unless windows?
-    shell '/usr/local/bin/bash'
+    shell '/usr/local/bin/bash' unless solaris?
     gid   node['omnibus']['build_user_group']
   end
   action :create
+end
+
+execute 'set-shell' do
+  command "passwd -e <<EOF
+/usr/local/bin/bash
+EOF
+"
+  only_if { solaris? }
 end
 
 group node['omnibus']['build_user_group'] do
