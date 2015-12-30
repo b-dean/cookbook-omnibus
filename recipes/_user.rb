@@ -57,8 +57,7 @@ end
 execute 'set-shell' do
   command "passwd -e <<EOF
 /usr/local/bin/bash
-EOF
-"
+EOF"
   only_if { solaris? }
 end
 

@@ -61,6 +61,14 @@ package node['omnibus']['toolchain_name'] do
   options '-a auto-install' if solaris2?
 end
 
+toolchain_shell = "/opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash"
+
+# Ensure the toolchain's bash is added to acceptable shells list
+execute 'chsec_login_shell' do
+  command "chsec -f /etc/security/login.cfg -s usw -a 'shells=/bin/sh,/bin/bsh,/bin/csh,/bin/ksh,/bin/tsh,/bin/ksh93,/usr/bin/sh,/usr/bin/bsh,/usr/bin/csh,/usr/bin/ksh,/usr/bin/tsh,/usr/bin/ksh93,/usr/bin/rksh,/usr/bin/rksh93,/usr/sbin/uucp/uucico,/usr/sbin/sliplogin,/usr/sbin/snappd,/usr/bin/bash,#{toolchain_shell}'"
+  only_if { aix? }
+end
+
 user node['omnibus']['build_user'] do
   shell "/opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash"
   action :create
