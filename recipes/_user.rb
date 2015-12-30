@@ -38,28 +38,22 @@ group node['omnibus']['build_user_group'] do
   ignore_failure true if windows?
 end
 
-# Ensure '/usr/local/bin/bash' is added to acceptable shells list
-execute 'chsec_login_shell' do
-  command "chsec -f /etc/security/login.cfg -s usw -a 'shells=/bin/sh,/bin/bsh,/bin/csh,/bin/ksh,/bin/tsh,/bin/ksh93,/usr/bin/sh,/usr/bin/bsh,/usr/bin/csh,/usr/bin/ksh,/usr/bin/tsh,/usr/bin/ksh93,/usr/bin/rksh,/usr/bin/rksh93,/usr/sbin/uucp/uucico,/usr/sbin/sliplogin,/usr/sbin/snappd,/usr/bin/bash,/usr/local/bin/bash'"
-  only_if { aix? }
-end
-
 user node['omnibus']['build_user'] do
   home     build_user_home
   password node['omnibus']['build_user_password']
   unless windows?
-    shell '/usr/local/bin/bash' unless solaris?
+    shell build_user_shell
     gid   node['omnibus']['build_user_group']
   end
   action :create
 end
 
-execute 'set-shell' do
-  command "passwd -e <<EOF
-/usr/local/bin/bash
-EOF"
-  only_if { solaris? }
-end
+# execute 'set-shell' do
+#   command "passwd -e <<EOF
+# /usr/local/bin/bash
+# EOF"
+#   only_if { solaris? }
+# end
 
 group node['omnibus']['build_user_group'] do
   members node['omnibus']['build_user']

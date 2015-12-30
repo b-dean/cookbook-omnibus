@@ -46,11 +46,11 @@ if solaris_10?
   end
 end
 
-package_path = File.join(Chef::Config[:file_cache_path], File.basename(node['omnibus']['toolchain_url']))
+package_path = File.join(Chef::Config[:file_cache_path], File.basename(toolchain_url))
 version      = node['omnibus']['toolchain_version']
 
 remote_file package_path do
-  source node['omnibus']['toolchain_url']
+  source toolchain_url
   action :create_if_missing
 end
 

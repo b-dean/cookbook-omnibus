@@ -49,6 +49,14 @@ module Omnibus
       node.run_state[:omnibus_env] ||= Hash.new { |hash, key| hash[key] = [] } # ~FC001
     end
 
+    def build_user_shell
+      if omnibus_toolchain_enabled?
+        "/opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash"
+      else
+        '/usr/local/bin/bash'
+      end
+    end
+
     def omnibus_toolchain_enabled?
       # Currently we only build the Omnibus Toolchain for Solaris 10, AIX, and Nexus
       solaris_10? || aix? || nexus?

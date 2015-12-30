@@ -23,7 +23,6 @@ default['omnibus'].tap do |omnibus|
   omnibus['toolchain_version']        = '1.1.2'
   omnibus['toolchain_meta_bucket']    = 'opscode-omnibus-package-metadata'
   omnibus['toolchain_package_bucket'] = 'opscode-omnibus-packages'
-  omnibus['toolchain_url']            = toolchain_url
   omnibus['git_version']              = '2.6.2'
   omnibus['ruby_version']             = '2.1.5'
 

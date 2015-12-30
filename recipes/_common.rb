@@ -21,7 +21,22 @@
 include_recipe 'chef-sugar::default'
 require 'chef/sugar/core_extensions'
 
-# Create the user
+# Create a mostly unconfigured user, these
+# duplicate entries in the _user recipe
+# where things like login shell and home
+# directory get added
+group node['omnibus']['build_user_group'] do
+  # The Window's group provider get's cranky if attempting to create a
+  # built-in group.
+  ignore_failure true if windows?
+end
+
+user node['omnibus']['build_user'] do
+  unless windows?
+    gid   node['omnibus']['build_user_group']
+  end
+end
+
 include_recipe 'omnibus::_user'
 
 # Ensure the cache directory exists
