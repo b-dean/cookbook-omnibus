@@ -72,14 +72,5 @@ end
 user node['omnibus']['build_user'] do
   shell "/opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash"
   action :create
-  not_if { solaris? }
-end
-
-execute 'set_shell' do
-  command <<-WAT.gsub(/^\s+/, ' ')
-    passwd -e <<-UGH
-    /opt/#{node['omnibus']['toolchain_name']}/embedded/bin/bash
-    UGH
-  WAT
-  only_if { solaris? }
+  not_if { solaris_10? }
 end

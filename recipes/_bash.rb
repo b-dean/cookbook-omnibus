@@ -106,3 +106,12 @@ file File.join(build_user_home, '.bashrc.d', 'omnibus-path.sh') do
     export PATH="/usr/local/bin:$PATH"
   EOH
 end
+
+execute 'set_shell' do
+  command <<-WAT.gsub(/^\s+/, ' ')
+    passwd -e <<-UGH
+    /usr/local/bin/bash
+    UGH
+  WAT
+  only_if { solaris_11? }
+end
