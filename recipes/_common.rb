@@ -32,8 +32,8 @@ group node['omnibus']['build_user_group'] do
 end
 
 user node['omnibus']['build_user'] do
-  unless windows?
-    gid   node['omnibus']['build_user_group']
+  unless windows? # rubocop:disable IfUnlessModifier
+    gid node['omnibus']['build_user_group']
   end
 end
 

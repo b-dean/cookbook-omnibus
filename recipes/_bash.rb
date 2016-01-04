@@ -107,11 +107,16 @@ file File.join(build_user_home, '.bashrc.d', 'omnibus-path.sh') do
   EOH
 end
 
-execute 'set_shell' do
-  command <<-WAT.gsub(/^\s{4}/, '')
-    passwd -e <<-UGH
-    /usr/local/bin/bash
-    UGH
-  WAT
-  only_if { solaris_11? }
+if solaris_11?
+  template '/etc/shells' do
+    variables(omnibus_shell: build_user_shell)
+    notifies :run, 'execute[set_shell_solaris11]', :immediately
+  end
+
+  execute 'set_shell_solaris11' do
+    command <<-WAT.gsub(/^\s{6}/, '')
+      printf "%s\\n" #{build_user_shell} #{build_user_shell} | passwd -e #{node['omnibus']['build_user']}
+    WAT
+    action :nothing
+  end
 end
