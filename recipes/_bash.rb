@@ -108,7 +108,7 @@ file File.join(build_user_home, '.bashrc.d', 'omnibus-path.sh') do
 end
 
 execute 'set_shell' do
-  command <<-WAT.gsub(/^\s+/, ' ')
+  command <<-WAT.gsub(/^\s{4}/, '')
     passwd -e <<-UGH
     /usr/local/bin/bash
     UGH
