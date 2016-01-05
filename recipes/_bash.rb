@@ -109,7 +109,10 @@ end
 
 if solaris_11?
   template '/etc/shells' do
-    variables(omnibus_shell: build_user_shell)
+    variables(
+      omnibus_shell:   build_user_shell,
+      existing_shells: etc_shells
+    )
     notifies :run, 'execute[set_shell_solaris11]', :immediately
   end
 

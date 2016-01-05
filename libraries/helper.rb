@@ -66,6 +66,14 @@ module Omnibus
       "#{node['omnibus']['toolchain_name'] + '-' + node['omnibus']['toolchain_version']}"
     end
 
+    def etc_shells
+      if File.exist?('/etc/shells')
+        IO.read('/etc/shells')
+      else
+        false
+      end
+    end
+
     def toolchain_url(toolchain_name = node['omnibus']['toolchain_name'])
       version        = node['omnibus']['toolchain_version']
       meta_bucket    = node['omnibus']['toolchain_meta_bucket']    # opscode-omnibus-package-metadata

@@ -30,6 +30,8 @@ describe 'omnibus::_omnibus_toolchain' do
 
   before do
     allow_any_instance_of(Chef::Node).to receive(:open).and_return(StringIO.new(json))
+    allow_any_instance_of(Chef::Recipe).to receive(:open).and_return(StringIO.new(json))
+    allow_any_instance_of(Chef::Resource).to receive(:open).and_return(StringIO.new(json))
   end
 
   context 'when run on AIX (7)' do
@@ -51,6 +53,11 @@ describe 'omnibus::_omnibus_toolchain' do
     it 'installs the toolchain package' do
       expect(chef_run).to install_package('bananas').with(version: '1.1.3')
     end
+
+    it 'creates the omnibus build user' do
+      expect(chef_run).to create_user('omnibus')
+        .with_shell(%r{(\/opt\/.*?\/embedded\/bin\/bash)})
+    end
   end
 
   context 'when run on Solaris (10)' do
@@ -65,21 +72,12 @@ describe 'omnibus::_omnibus_toolchain' do
       end.converge(described_recipe)
     end
 
-    before do
-      allow_any_instance_of(Chef::Node).to receive(:open).and_return(StringIO.new(json))
-    end
-
     it 'downloads a toolchain solaris package' do
       expect(chef_run).to create_remote_file_if_missing('/var/chef/cache/bananas-1.1.3-1.sparc.solaris')
     end
 
     it 'installs the toolchain package' do
       expect(chef_run).to install_package('bananas').with(version: '1.1.3')
-    end
-
-    it 'creates the omnibus build user' do
-      expect(chef_run).to modify_user('omnibus')
-        .with_shell(%r{(\/opt\/.*?\/embedded\/bin\/bash)})
     end
   end
 

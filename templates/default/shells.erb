@@ -1,11 +1,17 @@
-/usr/bin/sh
+<% if @etc_shells then
+    IO.read('/etc/shells')
+  else
+'/usr/bin/sh
 /usr/bin/csh
 /usr/bin/ksh
 /usr/bin/jsh
+/usr/bin/bsh
 /bin/sh
 /bin/csh
 /bin/ksh
 /bin/jsh
 /sbin/sh
-/sbin/jsh
+/sbin/jsh'
+  end %>
+/usr/bin/bash
 <%= @omnibus_shell %>
