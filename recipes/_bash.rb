@@ -113,13 +113,10 @@ if solaris_11?
       omnibus_shell:   build_user_shell,
       existing_shells: etc_shells
     )
-    notifies :run, 'execute[set_shell_solaris11]', :immediately
+    notifies :create, 'user[omnibus]', :immediately
   end
 
-  execute 'set_shell_solaris11' do
-    command <<-WAT.gsub(/^\s{6}/, '')
-      printf "%s\\n" #{build_user_shell} #{build_user_shell} | passwd -e #{node['omnibus']['build_user']}
-    WAT
-    action :nothing
+  user 'omnibus' do
+    shell build_user_shell
   end
 end

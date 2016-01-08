@@ -67,11 +67,9 @@ module Omnibus
     end
 
     def etc_shells
-      if File.exist?('/etc/shells')
-        IO.read('/etc/shells')
-      else
-        false
-      end
+      File.read('/etc/shells')
+    rescue
+      nil
     end
 
     def toolchain_url(toolchain_name = node['omnibus']['toolchain_name'])
