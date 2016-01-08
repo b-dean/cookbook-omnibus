@@ -4,8 +4,6 @@ end
 
 source 'https://supermarket.chef.io'
 
-cookbook 'remote_install', git: 'git@github.com:chef-cookbooks/remote_install.git'
-
 metadata
 
 group :integration do
