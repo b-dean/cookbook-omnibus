@@ -7,7 +7,7 @@ group :integration do
   gem 'kitchen-vagrant'
   gem 'kitchen-zone',    git: 'git@github.com:scotthain/kitchen-zone.git'
   gem 'kitchen-wpar',    git: 'git@github.com:chef/kitchen-wpar.git'
-  gem 'fauxhai',    git: 'git@github.com:customink/fauxhai.git'
+  gem 'fauxhai',         git: 'git@github.com:customink/fauxhai.git'
   gem 'winrm-transport', '~> 1.0'
 end
 
